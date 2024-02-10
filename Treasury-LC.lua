@@ -33,9 +33,9 @@ function initialize()
 	else
 		windower.add_to_chat(2,'Treasury: New character detected, Creating file: '..player.name..'_data.lua')
         settings = T{}
-        settings.Pass = T{}
-        settings.Lot = T{}
-        settings.Drop = T{}
+        settings.Pass = T{["all"]=false}
+        settings.Lot = T{["all"]=false}
+        settings.Drop = T{["all"]=false}
         settings.AutoDrop = false
         settings.AutoStack = true
         settings.Delay = 0.5
@@ -118,16 +118,20 @@ end
 
 function lotpassdrop(command1, command2, ids)
     local action = command1:lower()
-    --I'm not sure why, but somehow this Just Works after changing things, I didn't need to mess with it.
+    --I don't know what this is supposed to do but I don't like it.
     names = ids:map(table.get-{'name'} .. table.get+{res.items})
     if command2 == 'add' then
         log('Adding to ' .. action .. ' list:', names)
         code[action] = code[action] + ids
-        settings[command1] = settings[command1] + names
+        for name in names:it() do
+            settings[command1][name]=true
+        end
     else
         log('Removing from ' .. action .. ' list:', names)
         code[action] = code[action] - ids
-        settings[command1] = settings[command1] - names
+        for name in names:it() do
+            settings[command1][name]=nil
+        end
     end
 
     save_settings()

@@ -1,6 +1,10 @@
-"Why yet another fork of Treasury?" you may be asking, if indeed you even exist. Well, gentle reader, it's because Config doesn't parse strings from XML files properly. Do you have any idea how many items in this game have apostrophes in their names? Evidently the developers didn't, because adding any of them to Treasury's settings.xml breaks the whole thing because of the godawful HTML escape sequences used.
+"Why yet another fork of Treasury?" you may be asking, if indeed you even exist. Well, gentle reader, it's because Config doesn't parse strings from XML files properly. Do you have any idea how many items in this game have apostrophes in their names? Evidently the developers didn't, because adding any of them to Treasury's settings.xml breaks the whole thing because of the godawful HTML escape sequences used. Besides that, it doesn't really behave properly when trying to differentiate between global and character-specific Drop/Lot/Pass lists, so now it only has character-specific ones.
 
 You would be surprised how much of this completely broke just by trying to replace the config file with a format that can actually store strings correctly. Though in the end, Lua can't write strings to files correctly either, and while saving to JSON would solve that issue nicely, Config can only read JSONs, not write to them. Presumably it's because that functionality would be too useful and not sufficiently frustrating.
+
+Current issues:
+* You can only add items to lists (or remove them) one at a time, aside from the baked-in wildcards.
+* Baked-in wildcards might not actually work. I don't know, I never use them.
 
 Possible future plans:
 * save ID sets in the file so the DLP arrays aren't just a bunch of Booleans?
