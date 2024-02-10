@@ -4,7 +4,6 @@ You would be surprised how much of this completely broke just by trying to repla
 
 Current issues:
 * You can only add items to lists (or remove them) one at a time, aside from the baked-in wildcards.
-* Baked-in wildcards might not actually work. I don't know, I never use them.
 
 Possible future plans:
 * save ID sets in the file so the DLP arrays aren't just a bunch of Booleans?
