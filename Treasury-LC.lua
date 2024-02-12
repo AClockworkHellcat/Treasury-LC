@@ -1,19 +1,21 @@
-_addon.name = 'Treasury'
-_addon.author = 'Ihina (original) - KateFFXI (improvements) - AClockworkHellcat (taking out the trash)'
+_addon.name = 'Treasury-LC'
+_addon.author = 'Ihina (original) - KateFFXI (improvements) - AClockworkHellcat (Lua config conversion)'
 _addon.version = '3.1'
 _addon.commands = {'treasury', 'tr'}
 
-res = require('resources')
-files = require('files')
-packets = require('packets')
---We are not using Config. Fuck Config and fuck XML
+--These six could be replaced with require('luau'), but anyone who wants to mess with this might like to know exactly which libs are used.
 require('logger')
-require('tables')
 require('strings')
-require('pack')
+require('tables')
 require('lists')
 require('sets')
+res = require('resources')
+
+files = require('files')
+packets = require('packets')
+require('pack')
 require('chat')
+
 
 --Putting these in functions isn't strictly necessary, but keeping the code tidy and readable is nice.
 function save_settings()
@@ -34,7 +36,7 @@ function initialize()
 		windower.add_to_chat(2,'Treasury: New character detected, Creating file: '..player.name..'_data.lua')
         settings = T{}
         settings.Pass = T{["all"]=false}
-        settings.Lot = T{["all"]=false}
+        settings.Lot = T{["all"]=true}
         settings.Drop = T{["all"]=false}
         settings.AutoDrop = false
         settings.AutoStack = true
@@ -45,9 +47,6 @@ function initialize()
 
 	settings = require('data/'..player.name..'_data')
 
-    for k,v in pairs(settings) do
-        print(k ..': '..' ('..type(v)..')')
-    end
     duplicate_rare = false
 
     all_ids = T{}
@@ -76,7 +75,6 @@ function initialize()
                 idSet:add(all_ids[k])
             end
         end
-        print(tostring(idSet))
         return idSet
     end
 
@@ -138,7 +136,7 @@ function lotpassdrop(command1, command2, ids)
     force_check(command1 == 'Drop')
 end
 
---More metaprogramming I had to unfuck. Stop doing this shit. If you cared about optimization, you wouldn't be using Lua in the first place.
+--There doesn't seem much point using varargs in a function that gets called repeatedly anyway, and it kept breaking.
 function act(action, output, id, index)
     if settings.Verbose then
         log('%s %s':format(output, res.items[id].name:color(258)))
@@ -146,7 +144,8 @@ function act(action, output, id, index)
 
 	local name = player.name
 	local our_delay = 0
-    --I don't know why this convoluted function for randomizing the delay based on the character's name is here, but I've long suspected FFXI uses a similar function for drops.
+    --I don't know why a function for randomizing the delay based on the character's name is here, but it works.
+    --I've long suspected FFXI uses a similar function for most RNG tasks.
 	sum = 0
 	for key in name:gmatch"." do
 		vari = string.byte(key)
@@ -182,7 +181,7 @@ function drop(eyedee, slott)
     act('drop_item', 'Dropping', eyedee, slott)
 end
 --How was something like pass=act+{'pass_item','Passing'} even supposed to work? Because it didn't. FOH.
-
+--Everything from here on out works, I haven't had to mess with it.
 function force_check()
     local items = windower.ffxi.get_items()
 
@@ -347,7 +346,7 @@ function find_id(name)
         return all_ids[name]
     end
 end
---Everything from here on out works, I haven't had to mess with it.
+
 function pool_ids()
     return S(T(windower.ffxi.get_items().treasure):map(table.get-{'item_id'}))
 end
@@ -496,6 +495,8 @@ windower.register_event('addon command', function(command1, command2, ...)
         end
 
         settings.Delay = tonumber(command2)
+        --If you're changing the delay in the first place, I assume you'd want it saved.
+        save_settings()
         log('Delay set to %f seconds':format(settings.Delay))
 
     elseif command1 == 'verbose' then
@@ -508,7 +509,7 @@ windower.register_event('addon command', function(command1, command2, ...)
         save_settings()
         log('Verbose output %s':format(settings.Verbose and 'enabled' or 'disabled'))
 
-    elseif command1 == 'save' then
+    elseif command1 == 'save' then --Redundant, since changing anything saves everything...
         save_settings()
 
     elseif command1 == 'help' then
@@ -521,7 +522,7 @@ windower.register_event('addon command', function(command1, command2, ...)
         print('    \\cs(255,255,255)autodrop [on|off]\\cr - Enables/disables (or toggles) the auto-drop setting')
         print('    \\cs(255,255,255)verbose [on|off]\\cr - Enables/disables (or toggles) the verbose setting')
         print('    \\cs(255,255,255)autostack [on|off]\\cr - Enables/disables (or toggles) the autostack feature')
-        print('    \\cs(255,255,255)delay <value>\\cr - Allows you to change the delay of actions (default: 0)')
+        print('    \\cs(255,255,255)delay <value>\\cr - Allows you to change the delay of actions (default: 0.5)')
 	elseif command1 == 'test' then
 		test(command2)
     end

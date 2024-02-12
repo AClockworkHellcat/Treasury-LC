@@ -1,14 +1,19 @@
-"Why yet another fork of Treasury?" you may be asking, if indeed you even exist. Well, gentle reader, it's because Config doesn't parse strings from XML files properly. Do you have any idea how many items in this game have apostrophes in their names? Evidently the developers didn't, because adding any of them to Treasury's settings.xml breaks the whole thing because of the godawful HTML escape sequences used. Besides that, it doesn't really behave properly when trying to differentiate between global and character-specific Drop/Lot/Pass lists, so now it only has character-specific ones.
-
-You would be surprised how much of this completely broke just by trying to replace the config file with a format that can actually store strings correctly. Though in the end, Lua can't write strings to files correctly either, and while saving to JSON would solve that issue nicely, Config can only read JSONs, not write to them. Presumably it's because that functionality would be too useful and not sufficiently frustrating.
+Conceivable questions:
+* "Why?": Treasury breaks if you add any item with an apostrophe or period in its name to the lists. Since I did a lot of Dynamis farming for a while, this was unacceptable. JSON has no such problems, but config can't write to them, only read them.
+* "I can do better": That isn't a question, but you probably can.
 
 Current issues:
 * You can only add items to lists (or remove them) one at a time, aside from the baked-in wildcards.
 
 Possible future plans:
 * save ID sets in the file so the DLP arrays aren't just a bunch of Booleans?
+    -> Could do, but would it improve anything?
 * alternatively, figure out how to get Lua to properly save sets of strings like a real programming language?
-* or perhaps be the whole bitch and write a replacement for config that saves to Lua files?
+    -> Would require iteration over every item to filter out sets and strings so they're properly delimited.
+* or perhaps be the whole bitch and write an alternative to config that saves to Lua files?
+    -> Couldn't do a full drop-in replacement because it would get clobbered anytime Windower updates.
+    -> However, only having to change one line in an addon to make it save better config files is a tempting prospect...
+    -> On the other hand, odds are nobody but me would use it anyway.
 
 
 
