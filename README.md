@@ -1,5 +1,5 @@
 Conceivable questions:
-* "Why?": Treasury breaks if you add any item with an apostrophe or period in its name to the lists. Since I did a lot of Dynamis farming for a while, this was unacceptable. JSON has no such problems, but config can't write to them, only read them. Moreover, using a single XML file for both global and character-specific lot/drop/pass lists meant you couldn't have exceptions to the global lot/drop/pass list on any character, and in fact it just copied the global list into each character-specific list anyway. As such, the global list served no useful purpose, and in fact made the addon function worse.
+* "Why?": Treasury breaks if you add any item with an apostrophe or period in its name to the lists. Since I did a lot of Dynamis farming for a while, this was unacceptable. JSON has no such problems, but config can't write to them, only read them. Moreover, using a single XML file for both global and character-specific lot/drop/pass lists meant you couldn't have exceptions to the global lot/drop/pass list on any character, and, worse, it just copied the global list into each character-specific list anyway. As such, the global list served no useful purpose, and in fact made the addon less functional.
 * "I can do better": That isn't a question, but you probably can.
 
 Current issues:
