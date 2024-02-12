@@ -35,9 +35,9 @@ function initialize()
 	else
 		windower.add_to_chat(2,'Treasury: New character detected, Creating file: '..player.name..'_data.lua')
         settings = T{}
-        settings.Pass = T{["all"]=false}
-        settings.Lot = T{["all"]=true}
-        settings.Drop = T{["all"]=false}
+        settings.Pass = T{}
+        settings.Lot = T{}
+        settings.Drop = T{}
         settings.AutoDrop = false
         settings.AutoStack = true
         settings.Delay = 0.5
