@@ -1,23 +1,19 @@
 Conceivable questions:
-* "Why?": Treasury breaks if you add any item with an apostrophe or period in its name to the lists. Since I did a lot of Dynamis farming for a while, this was unacceptable. JSON has no such problems, but config can't write to them, only read them.
+* "Why?": Treasury breaks if you add any item with an apostrophe or period in its name to the lists. Since I did a lot of Dynamis farming for a while, this was unacceptable. JSON has no such problems, but config can't write to them, only read them. Moreover, using a single XML file for both global and character-specific lot/drop/pass lists meant you couldn't have exceptions to the global lot/drop/pass list on any character, and in fact it just copied the global list into each character-specific list anyway. As such, the global list served no useful purpose, and in fact made the addon function worse.
 * "I can do better": That isn't a question, but you probably can.
 
 Current issues:
-* You can only add items to lists (or remove them) one at a time, aside from the baked-in wildcards.
+* Global doesn't work, but to be perfectly honest, it didn't work right in the original either (see above).
+* Aside from the built-in keywords (eg. dynad, heroism), you can only add items to lists (or remove them) one at a time. I cannot recall whether this was an issue in the original or not, because I don't think I ever needed to do it.
 
 Possible future plans:
-* save ID sets in the file so the DLP arrays aren't just a bunch of Booleans?
-    -> Could do, but would it improve anything?
-* alternatively, figure out how to get Lua to properly save sets of strings like a real programming language?
-    -> Would require iteration over every item to filter out sets and strings so they're properly delimited.
-* or perhaps be the whole bitch and write an alternative to config that saves to Lua files?
-    -> Couldn't do a full drop-in replacement because it would get clobbered anytime Windower updates.
-    -> However, only having to change one line in an addon to make it save better config files is a tempting prospect...
-    -> On the other hand, odds are nobody but me would use it anyway.
+* save ID sets in the file so the DLP arrays aren't just a bunch of Booleans? (Could do, but would it improve anything?)
+* alternatively, figure out how to get Lua to properly save sets of strings like a real programming language? (Would require iteration over every item to filter out sets and strings so they're properly delimited.)
+* or perhaps be the whole bitch and write an alternative to config that saves to Lua files? (Couldn't do a full drop-in replacement because it would get clobbered anytime Windower updates. However, only having to change one line in an addon to make it save better config files is a tempting prospect. On the other hand, odds are nobody but me would use it anyway.)
 
 
 
-Original readme below.
+Original readme (with necessary corrections) below.
 
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +32,7 @@ All commands can be shortened to `//tr`. `lot` and `pass` can be shortened to `l
 
 `//treasuy lot|pass|drop add|remove [global] <name>`
 
-This will add to or remove from the lot list, pass list or drop list all items matching `name`. `name` can contain standard Windower wildcards (`*`, `?`, `|`). It will add those for the current character only, unless `global` is specified, in which case it will add it for all characters.
+This will add to or remove from the lot list, pass list or drop list all items matching `name`. It will add those for the current character only.
 
 There are a few special key words for `name`:
 * `crystals` matches all crystal items (excluding HQ synthing crystals)
@@ -57,7 +53,7 @@ This will either clear the specified list (for the current character only) or li
 
 `//treasury lotall|passall`
 
-Lots/passes on all items currently in the pool
+Lots/passes on all items currently in the pool. Does not alter lot/pass lists.
 
 `//treasury clearall`
 
@@ -65,7 +61,7 @@ Clears all character-specific settings (it will keep global settings)
 
 `//treasury delay <value>`
 
-Sets the delay that should pass before lotting/passing/dropping items, in seconds. It will lot/pass/drop items in a random time interval between half the value specified and the full value. I.e. if you specify 5 seconds it will lot/pass/drop between 2.5 seconds and 5 seconds randomly.
+Sets the minimum amount of time that should pass before lotting/passing/dropping items, in seconds. Originally, this would result in a number of seconds ranging from half of `<delay>` to the full `<delay>` passing between each lot/pass/drop, but it now serves no real purpose and may as well be left at its default setting.
 
 `//treasury <autodrop|autostack|verbose> [on|off]`
 

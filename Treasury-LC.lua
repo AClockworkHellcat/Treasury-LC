@@ -144,8 +144,7 @@ function act(action, output, id, index)
 
 	local name = player.name
 	local our_delay = 0
-    --I don't know why a function for randomizing the delay based on the character's name is here, but it works.
-    --I've long suspected FFXI uses a similar function for most RNG tasks.
+    --I assume this was written just to avoid using math.random(). I've long suspected FFXI uses a similar function for most RNG tasks.
 	sum = 0
 	for key in name:gmatch"." do
 		vari = string.byte(key)
@@ -169,7 +168,6 @@ function act(action, output, id, index)
 	end
     --As far as I can tell, prepare() serves no purpose in these scheduling functions.
 	local fn windower.ffxi[action]:schedule(our_delay, index)
-    --windower.ffxi[action]:schedule((math.random() + 1) / 2 * settings.Delay)
 end
 function pass(eyedee, slott)
     act('pass_item', 'Passing', eyedee, slott)
