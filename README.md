@@ -3,8 +3,11 @@ Conceivable questions:
 * "I can do better!": That isn't a question, but you probably can.
 
 Current issues:
-* Global doesn't work, but to be perfectly honest, it didn't work right in the original either (see above).
+* `global` doesn't work, but to be perfectly honest, it didn't work in the original either (see above).
 * Aside from the built-in keywords (eg. dynad, heroism), you can only add items to lists (or remove them) one at a time. I cannot recall whether this was an issue in the original or not, because I don't think I ever needed to do it.
+
+Potential issues:
+* Items with quotation marks in their names might break it. Not sure offhand.
 
 Possible future plans:
 * save ID sets in the file so the DLP arrays aren't just a bunch of Booleans? (Could do, but would it improve anything?)
