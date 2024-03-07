@@ -21,9 +21,20 @@ require('chat')
 function save_settings()
     settings_file:write('return' .. T(settings):tovstring())
 end
+
 function initialize()
     player = windower.ffxi.get_player()
+    --reload every minute until character's present.
+    if not player then
+        print('Character not yet loaded; reloading in 60 seconds.')
+        send_command('wait 60; lua r treasury-lc')
+    else
+        print(windower.ffxi.get_player().name .. ' found. Starting Treasury!')
+        configurate()
+    end
+end
 
+function configurate()
     if not windower.dir_exists(windower.addon_path..'data') then
         windower.create_dir(windower.addon_path..'data')
     end
@@ -141,33 +152,7 @@ function act(action, output, id, index)
     if settings.Verbose then
         log('%s %s':format(output, res.items[id].name:color(258)))
     end
-
-	local name = player.name
-	local our_delay = 0
-    --I assume this was written just to avoid using math.random(). I've long suspected FFXI uses a similar function for most RNG tasks.
-	sum = 0
-	for key in name:gmatch"." do
-		vari = string.byte(key)
-		sum = sum + vari
-	end
-
-	local final = (((sum / string.len(name)) + string.len(name)) - (string.len(name) * 0.005))
-	if final < 0 then
-		final = final * -1
-	end
-	if final > 26 then
-		final = (final / string.len(name)) * 0.057185
-	end
-
-	our_delay = (final + settings.Delay)
-
-	if our_delay > 7 then
-		our_delay = our_delay - 3.581
-	elseif our_delay > 6 and our_delay < 7 then
-		our_delay = our_delay - 1.138
-	end
-    --As far as I can tell, prepare() serves no purpose in these scheduling functions.
-	local fn windower.ffxi[action]:schedule(our_delay, index)
+    windower.ffxi[action]:prepare(index):schedule((math.random() + 1) / 2 * settings.Delay)
 end
 function pass(eyedee, slott)
     act('pass_item', 'Passing', eyedee, slott)
@@ -415,15 +400,15 @@ windower.register_event('addon command', function(command1, command2, ...)
     command1 = command1 and command1:lower() or 'help'
     command2 = command2 and command2:lower() or nil
 
-    local name = args:concat(' ')
+    local name = args:concat(' '):lower()
     if lotpassdrop_commands:containskey(command1) then
         command1 = lotpassdrop_commands[command1]
 
         if addremove_commands:containskey(command2) then
             command2 = addremove_commands[command2]
-
-            local ids = find_id(name)
-            if ids:empty() then
+        --Should've fixed this sooner because find_id() doesn't return an array anymore. My bad.
+            local ids = find_id(name) or false
+            if not ids then
                 error('No items found that match: %s':format(name))
                 return
             end
