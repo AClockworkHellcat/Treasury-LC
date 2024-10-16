@@ -5,7 +5,7 @@ Conceivable questions:
 Current issues:
 * `global` doesn't work, but to be perfectly honest, it didn't work in the original either (see above), and getting rid of it was kind of the point.
 * Aside from the built-in keywords (eg. dynad, heroism), you can only add items to lists (or remove them) one at a time. The code that allowed it in the original version just kept breaking.
-* Loading is broken for seemingly no reason.
+* Loading lot/drop/pass lists is broken for seemingly no reason.
 
 Potential issues:
 * Items with quotation marks in their names might break it. Not sure offhand.
