@@ -3,8 +3,9 @@ Conceivable questions:
 * "I can do better!": That isn't a question, but you probably can.
 
 Current issues:
-* `global` doesn't work, but to be perfectly honest, it didn't work in the original either (see above).
-* Aside from the built-in keywords (eg. dynad, heroism), you can only add items to lists (or remove them) one at a time. I cannot recall whether this was an issue in the original or not, because I don't think I ever needed to do it.
+* `global` doesn't work, but to be perfectly honest, it didn't work in the original either (see above), and getting rid of it was kind of the point.
+* Aside from the built-in keywords (eg. dynad, heroism), you can only add items to lists (or remove them) one at a time. The code that allowed it in the original version just kept breaking.
+* Loading is broken for seemingly no reason.
 
 Potential issues:
 * Items with quotation marks in their names might break it. Not sure offhand.
